@@ -1,0 +1,16 @@
+KEYMAPOPTS="gb gb"
+HOSTNAMEOPTS="-n alpine"
+# Contents of /etc/network/interfaces
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+"
+# DNSOPTS="-d example.com 8.8.8.8"
+TIMEZONEOPTS="-z UTC"
+PROXYOPTS="none"
+APKREPOSOPTS="-1"
+SSHDOPTS="-c openssh"
+NTPOPTS="-c openntpd"
+DISKOPTS="-m sys /dev/vda"

@@ -1,0 +1,7 @@
+GRUB_DISTRIBUTOR="Alpine"
+GRUB_TIMEOUT=1
+GRUB_DISABLE_SUBMENU=y
+GRUB_DISABLE_RECOVERY=true
+GRUB_TERMINAL="serial console"
+GRUB_SERIAL_COMMAND="serial --unit=0 --word=8 --parity=no --speed 38400 --stop=1"
+GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0,38400n8d modules=sd-mod,usb-storage,xfs quiet rootfstype=xfs"
