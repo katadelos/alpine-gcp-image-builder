@@ -1,0 +1,62 @@
+{
+  "builders": [
+    {
+      "type": "qemu",
+      "format": "raw",
+      "headless": "true",
+      "communicator": "ssh",
+      "disk_size": "{{user `disk_size`}}",
+      "vm_name": "disk.raw",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "output_directory": "build",
+      "shutdown_command": "poweroff",
+      "http_directory": "http",
+      "ssh_username": "root",
+      "ssh_password": "{{user `root_password`}}",
+      "ssh_timeout": "10m",
+      "iso_url": "http://dl-cdn.alpinelinux.org/alpine/v3.12/releases/x86_64/alpine-virt-3.12.0-x86_64.iso",
+      "iso_checksum": "fe694a34c0e2d30b9e5dea7e2c1a3892c1f14cb474b69cc5c557a52970071da5",
+      "boot_wait": "5s",
+      "boot_key_interval": "5ms",
+      "boot_command": [
+        "root<enter><wait>",
+        "export BOOTLOADER=grub<enter>",
+        "export ROOTFS=xfs<enter>",
+        "export DISKOPTS='-L -s 512 -m sys /dev/vda'<enter>",
+        "ifconfig eth0 up && udhcpc -i eth0<enter><wait>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>",
+        "setup-apkrepos -1<enter><wait>",
+        "printf \"{{user `root_password`}}\\n{{user `root_password`}}\\ny\\n\" | setup-alpine -f $PWD/answers<enter><wait><wait>",
+        "mount /dev/vda3 /mnt && ",
+        "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config && ",
+        "umount /mnt ; reboot<enter>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "/tmp/",
+      "source": "./files/",
+      "type": "file"
+    },
+    {
+      "inline": [
+        "/tmp/scripts/0-setup_apk.sh",
+        "/tmp/scripts/1-setup_users.sh {{user `gcp_username`}} {{user `gcp_password`}}",
+        "/tmp/scripts/2-gcp_config.sh",
+        "/tmp/scripts/3-generate_motd.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "cpus": "1",
+    "memory": "512",
+    "disk_size": "1000M",
+    "root_password": "alpinelinux",
+    "gcp_username": "gcp",
+    "gcp_password": "alpinelinux",
+    "vm_name": "alpine-3.12.0-x86_64"
+  }
+}

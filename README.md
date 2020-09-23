@@ -13,7 +13,7 @@ The minimal nature of this distribution is an advantage when using low-power, sh
 - Create the image using Packer:
 `packer build alpine-gcp.json`
 - Compress the image:
-`tar --format=oldgnu -Sczf /tmp/alpine_gcp.tar.gz build/disk.raw`
+`tar --format=oldgnu -Sczf /tmp/alpine_gcp.tar.gz -C build disk.raw`
 
 ### Deployment
 If you already have a Cloud Storage bucket that you would prefer to use, replace the path `gs://alpine-gcp` in the commands below with the path to your own bucket.
@@ -38,7 +38,9 @@ The `./files/config` directory contains a number of files which are copied to th
 |./files/config/grub            |/etc/defaults/grub              |Modified GRUB configuration for GCP       |
 |./files/config/inittab         |/etc/inittab                    |Enables serial port for GCP console       |
 |./files/config/sshd_config     |/etc/ssh/sshd_config            |Disables password login                   |
-|./files/config/authorized_keys |/home/user/.ssh/authorized_keys |Default SSH public keys for `user` account|
+|./files/config/authorized_keys |/home/gcp/.ssh/authorized_keys  |Default SSH public keys for `gcp`  account|
+
+Due to some of the limitations below. builds will fail if an SSH public key is not found within `authorized_keys`.
 
 ## Limitations
 - GCP do not support installation of the guest environment on Alpine Linux images. This means that some features will be unavailable on machines created using this template. Some of these absent features are listed below:

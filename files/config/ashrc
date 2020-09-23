@@ -1,0 +1,23 @@
+GOOGLE_BLUE='38;2;66;133;244'
+GOOGLE_GREEN='38;2;15;157;88'
+GOOGLE_RED='38;2;219;68;55'
+GOOGLE_YELLOW='38;2;244;160;0'
+
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+if [ "$color_prompt" = yes ]; then
+    if [ "$USER" = root ]; then
+      PS1='\[\033[$GOOGLE_RED;1;3m\]\u@\H\[\033[\00m\]:\w\$\[\033[00m\] '
+    else
+      PS1='\[\033[$GOOGLE_GREEN;1;3m\]\u@\H\[\033[\00m\]:\w\$\[\033[00m\] '
+    fi
+else
+    PS1='\u@\h:\w\$ '
+fi
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lh='ls -lh'
