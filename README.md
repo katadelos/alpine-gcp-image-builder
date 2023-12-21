@@ -9,6 +9,7 @@ Although Alpine Linux is most commonly used as a base system for container image
 The minimal nature of this distribution is an advantage when using low-power, shared core machine types such as `f1-micro`, `g1-small` or `e2-micro` due to the significantly lower idle CPU and memory requirements of Alpine. The ability to create images >=1GB can also result in a minor cost saving in use cases where only a small amount of storage is required.
 
 ## Usage
+**Remember to add your SSH public key at `authorized_keys`.**
 ### Building an image
 - Create the image using Packer:
 `packer build alpine-gcp.json`
